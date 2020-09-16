@@ -1,0 +1,11 @@
+.filter-form {
+  margin: 0 5% 0 8%;
+}
+
+select {
+  max-width: 260px;
+}
+
+button {
+  width: 100px;
+}

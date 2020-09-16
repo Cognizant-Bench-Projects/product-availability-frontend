@@ -1,0 +1,23 @@
+<div *ngIf="availabilityService.searched && !availabilityService.loading && !availabilityService.availableItems.length">
+  <h2>No Result Found</h2>
+</div>
+<div *ngIf="availabilityService.searched && !availabilityService.loading && availabilityService.availableItems.length">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Department</th>
+        <th scope="col">Product</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Location</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="hovered" *ngFor="let availableItem of availabilityService.availableItems">
+        <td>{{availableItem.product.dept.deptName}}</td>
+        <td>{{availableItem.product.productName}}</td>
+        <td>{{availableItem.amount}}</td>
+        <td>{{availableItem.location.locName}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

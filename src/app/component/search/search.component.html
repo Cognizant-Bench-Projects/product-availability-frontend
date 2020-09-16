@@ -1,0 +1,28 @@
+<div class="filter-form" *ngIf="allLocations.length && allDepartments.length && allProducts.length">
+  <h3>Filter By</h3>
+  <br>
+  <div class="form-group">
+    <label for="dept-option">Department:</label>
+    <select id="dept-option" class="form-control" (change)="changeDept($event)">
+      <option selected value="0"></option>
+      <option *ngFor="let dept of allDepartments" [value]="dept.id">{{dept.deptName}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="prod-option">Product:</label>
+    <select id="prod-option" class="form-control" (change)="changeProd($event)">
+      <option selected value="0"></option>
+      <option *ngFor="let prod of filterProducts" [value]="prod.id">{{prod.productName}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="loc-option">Location:</label>
+    <select id="loc-option" class="form-control" (change)="changeLoc($event)">
+      <option selected value="0"></option>
+      <option *ngFor="let loc of allLocations" [value]="loc.id">{{loc.locName}}</option>
+    </select>
+  </div>
+  <div class="form-group text text-center">
+    <button class="btn btn-outline-primary" (click)="filterByCondition()">Filter</button>
+  </div>
+</div>
