@@ -3,26 +3,27 @@
   <br>
   <div class="form-group">
     <label for="dept-option">Department:</label>
-    <select id="dept-option" class="form-control" (change)="changeDept($event)">
+    <select id="dept-option" class="form-control" [(ngModel)]="selectedDepartment" (change)="changeDept()">
       <option selected value="0"></option>
-      <option *ngFor="let dept of allDepartments" [value]="dept.id">{{dept.deptName}}</option>
+      <option *ngFor="let dept of allDepartments" [ngValue]="dept.id">{{dept.deptName}}</option>
     </select>
   </div>
   <div class="form-group">
     <label for="prod-option">Product:</label>
-    <select id="prod-option" class="form-control" (change)="changeProd($event)">
+    <select id="prod-option" class="form-control" [(ngModel)]="selectedProduct">
       <option selected value="0"></option>
-      <option *ngFor="let prod of filterProducts" [value]="prod.id">{{prod.productName}}</option>
+      <option *ngFor="let prod of filterProducts" [ngValue]="prod.id">{{prod.productName}}</option>
     </select>
   </div>
   <div class="form-group">
     <label for="loc-option">Location:</label>
-    <select id="loc-option" class="form-control" (change)="changeLoc($event)">
+    <select id="loc-option" class="form-control" [(ngModel)]="selectedLocation">
       <option selected value="0"></option>
-      <option *ngFor="let loc of allLocations" [value]="loc.id">{{loc.locName}}</option>
+      <option *ngFor="let loc of allLocations" [ngValue]="loc.id">{{loc.locName}}</option>
     </select>
   </div>
-  <div class="form-group text text-center">
+  <div class="form-group">
+    <button class="btn btn-outline-secondary" (click)="clearFilter()">Clear</button>
     <button class="btn btn-outline-primary" (click)="filterByCondition()">Filter</button>
   </div>
 </div>

@@ -6,7 +6,6 @@ import { Balance } from 'src/app/model/balance';
 })
 export class AvailabilityService {
 
-  searched: boolean = false;
   loading: boolean = false;
   availableItems: Array<Balance> = [];
 

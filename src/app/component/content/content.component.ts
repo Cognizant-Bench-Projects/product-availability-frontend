@@ -9,10 +9,22 @@ import { BalanceService } from 'src/app/service/balance-service/balance.service'
 })
 export class ContentComponent implements OnInit {
 
+  ascending: boolean = true;
+
   constructor(private availabilityService: AvailabilityService, private balanceService: BalanceService) { }
 
   ngOnInit() {
-    this.balanceService.getAllAvailableItems();
+    this.balanceService.getAllAvailableItems(0, 0, 0);
+  }
+
+  reorder(condition) {
+    if (condition === 'product') {
+      this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a.product.productName < b.product.productName ? -1 : 1) : (b.product.productName < a.product.productName ? -1 : 1));
+    } else {
+      this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a['location']['zipCode'] < b['location']['zipCode'] ? -1 : 1) : (b['location']['zipCode'] < a['location']['zipCode'] ? -1 : 1));
+    }
+
+    this.ascending = !this.ascending;
   }
 
 }

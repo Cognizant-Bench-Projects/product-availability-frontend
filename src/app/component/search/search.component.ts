@@ -48,9 +48,7 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  changeDept(event) {
-    this.selectedDepartment = event.target.value;
-
+  changeDept() {
     if (this.selectedDepartment == 0) {
       this.filterProducts = this.allProducts;
     } else {
@@ -58,17 +56,14 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  changeProd(event) {
-    this.selectedProduct = event.target.value;
-  }
-
-  changeLoc(event) {
-    this.selectedLocation = event.target.value;
-  }
-
   filterByCondition() {
-    console.log(this.selectedDepartment, this.selectedProduct, this.selectedLocation);
-    this.balanceService.getAllAvailableItems();
+    this.balanceService.getAllAvailableItems(this.selectedDepartment, this.selectedProduct, this.selectedLocation);
+  }
+
+  clearFilter() {
+    this.selectedDepartment = 0;
+    this.selectedProduct = 0;
+    this.selectedLocation = 0;
   }
 
 }

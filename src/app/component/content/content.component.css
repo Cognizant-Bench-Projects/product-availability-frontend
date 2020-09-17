@@ -3,6 +3,16 @@ table {
   max-width: 95%;
 }
 
-.hovered:hover {
+tbody .hovered:hover {
   background-color: whitesmoke;
+}
+
+thead .hovered:hover {
+  background-color: black;
+  cursor: pointer;
+}
+
+.loading-spinner {
+  text-align: center;
+  margin-top: 10vh;
 }

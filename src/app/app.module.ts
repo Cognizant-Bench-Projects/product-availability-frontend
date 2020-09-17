@@ -8,13 +8,15 @@ import { SearchComponent } from './component/search/search.component';
 import { ContentComponent } from './component/content/content.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
+import { LoadingSpinnerComponent } from './component/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TitleComponent,
     SearchComponent,
-    ContentComponent
+    ContentComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

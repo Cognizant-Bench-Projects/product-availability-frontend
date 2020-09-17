@@ -13,9 +13,8 @@ export class BalanceService {
 
   constructor(private http: HttpClient, private availabilityService: AvailabilityService) { }
 
-  getAllAvailableItems() {
+  getAllAvailableItems(deptId: number, prodId: number, locId: number) {
     this.availabilityService.loading = true;
-    this.availabilityService.searched = true;
     
     let httpOption = {
       headers: new HttpHeaders({
@@ -24,7 +23,7 @@ export class BalanceService {
       })
     };
     
-    this.http.get<Balance[]>(this.url, httpOption).toPromise().then(
+    this.http.get<Balance[]>(`${this.url}?location=${locId}&product=${prodId}&department=${deptId}`, httpOption).toPromise().then(
       data => {
         this.availabilityService.availableItems = data;
         this.availabilityService.loading = false;
