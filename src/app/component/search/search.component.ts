@@ -21,6 +21,11 @@ export class SearchComponent implements OnInit {
   selectedLocation: number = 0;
   selectedDepartment: number = 0;
   selectedProduct: number = 0;
+  givenZipCode: string = '';
+  givenRadius: number = 10;
+
+  filterByLocation: boolean = true;
+  validZipCode: boolean = true;
 
   constructor(private deptService: DepartmentService, private productService: ProductService, private locationService: LocationService, private balanceService: BalanceService) { }
 
@@ -64,6 +69,22 @@ export class SearchComponent implements OnInit {
     this.selectedDepartment = 0;
     this.selectedProduct = 0;
     this.selectedLocation = 0;
+    this.givenZipCode = '';
+    this.givenRadius = 10;
+    this.validZipCode = true;
+  }
+
+  toggleSearchMethod() {
+    this.filterByLocation = !this.filterByLocation;
+    this.validZipCode = true;
+  }
+
+  searchNearestLocation() {
+    this.validZipCode = /^\d{5}$/.test(this.givenZipCode);
+    if (this.validZipCode) {
+      this.givenRadius = this.givenRadius || 10;
+      this.balanceService.getAllAvailableItems(1, 1, 1);
+    }
   }
 
 }
