@@ -18,6 +18,8 @@ export class ContentComponent implements OnInit {
   }
 
   reorder(condition) {
+    this.ascending = !this.ascending;
+    
     if (condition === 'product') {
       this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a.product.productName < b.product.productName ? -1 : 1) : (b.product.productName < a.product.productName ? -1 : 1));
     } else if (condition === 'location') {
@@ -25,8 +27,6 @@ export class ContentComponent implements OnInit {
     } else {
       this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a.distance < b.distance ? -1 : 1) : (b.distance < a.distance ? -1 : 1))
     }
-
-    this.ascending = !this.ascending;
   }
 
 }

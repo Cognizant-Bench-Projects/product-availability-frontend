@@ -19,7 +19,6 @@ export class BalanceService {
 
   getAllAvailableItems(deptId: number, prodId: number, locId: number, searchByZipCode: boolean = false) {
     this.availabilityService.loading = true;
-    this.availabilityService.availableItems = [];
 
     let httpOption = {
       headers: new HttpHeaders({
@@ -35,11 +34,12 @@ export class BalanceService {
           this.availabilityService.availableItems = data;
         } else {
           this.availabilityService.showDistance = true;
+          this.availabilityService.availableItems = [];
+
           this.zipCodeResult.forEach(geoDetail => {
-            console.log('Zip Code:', geoDetail.postalCode);
             data.forEach(balance => {
               if (geoDetail.postalCode === balance['location']['zipCode']) {
-                balance.distance = (Number(geoDetail.distance) * 0.62).toString().slice(0, 4);
+                balance.distance = ((Number(geoDetail.distance) * 0.621371).toFixed(2)).toString();
                 this.availabilityService.availableItems.push(balance);
               }
             })
@@ -57,7 +57,7 @@ export class BalanceService {
         if (data.postalCodes) {
           this.zipCodeResult = data.postalCodes;
           this.getAllAvailableItems(0, prodId, 0, true);
-        } else {
+        } else if (data.status.message.startsWith('no postal code')) {
           this.invalidZipCode.emit(); 
         }
       }

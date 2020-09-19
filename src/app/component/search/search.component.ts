@@ -58,6 +58,7 @@ export class SearchComponent implements OnInit {
   }
 
   changeDept() {
+    this.selectedProduct = 0;
     if (this.selectedDepartment == 0) {
       this.filterProducts = this.allProducts;
     } else {
@@ -73,6 +74,7 @@ export class SearchComponent implements OnInit {
     this.selectedDepartment = 0;
     this.selectedProduct = 0;
     this.selectedLocation = 0;
+    this.filterProducts = this.allProducts;
     this.givenZipCode = '';
     this.givenRadius = 10;
     this.validZipCode = true;
@@ -82,11 +84,12 @@ export class SearchComponent implements OnInit {
   toggleSearchMethod() {
     this.filterByLocation = !this.filterByLocation;
     this.validZipCode = true;
+    this.validRadius = true;
   }
 
   searchNearestLocation() {
     this.givenRadius = this.givenRadius || 0;
-    this.validRadius = this.givenRadius >= 0 && this.givenRadius <= 18;
+    this.validRadius = this.givenRadius >= 0 && this.givenRadius <= 18.6;
     this.validZipCode = /^\d{5}$/.test(this.givenZipCode);
     if (this.validZipCode && this.validZipCode) {
       this.balanceService.getAvailableItemsByZipCode(this.selectedProduct, this.givenZipCode, this.givenRadius);

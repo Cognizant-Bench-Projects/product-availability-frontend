@@ -12,8 +12,8 @@ export class GeoService {
   constructor(private http: HttpClient) { }
 
   searchedByZipCode(zipCode: string, radius: number) {
-    radius = radius * 1.61;
-    return this.http.get<GeoAPI>(`${this.url}?postalcode=${zipCode}&country=US&radius=${radius}&username=jli015`).toPromise();
+    radius = radius * 1.60934;
+    return this.http.get<GeoAPI>(`${this.url}?postalcode=${zipCode}&country=US&radius=${radius}&username=jli015&maxRows=500`).toPromise();
   }
   
 }
