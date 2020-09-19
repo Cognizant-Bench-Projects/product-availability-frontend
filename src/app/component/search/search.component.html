@@ -31,7 +31,8 @@
     </div>
     <div class="form-group">
       <label for="radius">Radius (Miles):</label>
-      <input type="number" id="radius" class="form-control" placeholder="0" min="0" max="10000" [(ngModel)]="givenRadius">
+      <input type="number" id="radius" class="form-control" placeholder="0" min="0" max="18" [(ngModel)]="givenRadius">
+      <small class="errorMsg" *ngIf="!validRadius">Radius can only between 0 to 18 miles</small>
     </div>
     <p (click)="toggleSearchMethod()">Filter By Location</p>
   </div>

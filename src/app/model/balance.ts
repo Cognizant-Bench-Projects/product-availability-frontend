@@ -6,4 +6,5 @@ export class Balance {
   product: Product;
   location: Location;
   amount: number;
+  distance?: string;
 }

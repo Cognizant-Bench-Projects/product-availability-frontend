@@ -20,8 +20,10 @@ export class ContentComponent implements OnInit {
   reorder(condition) {
     if (condition === 'product') {
       this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a.product.productName < b.product.productName ? -1 : 1) : (b.product.productName < a.product.productName ? -1 : 1));
-    } else {
+    } else if (condition === 'location') {
       this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a['location']['zipCode'] < b['location']['zipCode'] ? -1 : 1) : (b['location']['zipCode'] < a['location']['zipCode'] ? -1 : 1));
+    } else {
+      this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a.distance < b.distance ? -1 : 1) : (b.distance < a.distance ? -1 : 1))
     }
 
     this.ascending = !this.ascending;

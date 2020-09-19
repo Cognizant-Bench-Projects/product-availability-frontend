@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Department } from 'src/app/model/department';
 import { Product } from 'src/app/model/product';
+import { AvailabilityService } from 'src/app/service/availability-service/availability.service';
 import { BalanceService } from 'src/app/service/balance-service/balance.service';
 import { DepartmentService } from 'src/app/service/department-service/department.service';
 import { LocationService } from 'src/app/service/location-service/location.service';
@@ -26,8 +27,9 @@ export class SearchComponent implements OnInit {
 
   filterByLocation: boolean = true;
   validZipCode: boolean = true;
+  validRadius: boolean = true;
 
-  constructor(private deptService: DepartmentService, private productService: ProductService, private locationService: LocationService, private balanceService: BalanceService) { }
+  constructor(private deptService: DepartmentService, private productService: ProductService, private locationService: LocationService, private balanceService: BalanceService, private availabilityService: AvailabilityService) { }
 
   ngOnInit() {
     this.deptService.getAllDepartments().then(
@@ -51,6 +53,8 @@ export class SearchComponent implements OnInit {
     }, error => {
       console.warn(error);
     });
+
+    this.balanceService.emitErrorMsg().subscribe(() => this.validZipCode = false);
   }
 
   changeDept() {
@@ -72,6 +76,7 @@ export class SearchComponent implements OnInit {
     this.givenZipCode = '';
     this.givenRadius = 10;
     this.validZipCode = true;
+    this.validRadius = true;
   }
 
   toggleSearchMethod() {
@@ -80,10 +85,11 @@ export class SearchComponent implements OnInit {
   }
 
   searchNearestLocation() {
+    this.givenRadius = this.givenRadius || 0;
+    this.validRadius = this.givenRadius >= 0 && this.givenRadius <= 18;
     this.validZipCode = /^\d{5}$/.test(this.givenZipCode);
-    if (this.validZipCode) {
-      this.givenRadius = this.givenRadius || 10;
-      this.balanceService.getAllAvailableItems(1, 1, 1);
+    if (this.validZipCode && this.validZipCode) {
+      this.balanceService.getAvailableItemsByZipCode(this.selectedProduct, this.givenZipCode, this.givenRadius);
     }
   }
 

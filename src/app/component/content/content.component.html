@@ -11,6 +11,7 @@
         <th scope="col">Amount</th>
         <th scope="col">Location</th>
         <th scope="col" class="hovered" (click)="reorder('location')">Zip Code &#8597;</th>
+        <th scope="col" class="hovered" (click)="reorder('distance')" *ngIf="availabilityService.showDistance">Distance (mile) &#8597;</th>
       </tr>
     </thead>
     <tbody>
@@ -20,6 +21,7 @@
         <td>{{availableItem.amount}}</td>
         <td>{{availableItem.location.locName}}</td>
         <td>{{availableItem.location.zipCode}}</td>
+        <td *ngIf="availabilityService.showDistance">{{availableItem.distance}}</td>
       </tr>
     </tbody>
   </table>

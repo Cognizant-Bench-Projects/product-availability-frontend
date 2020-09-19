@@ -7,6 +7,7 @@ import { Balance } from 'src/app/model/balance';
 export class AvailabilityService {
 
   loading: boolean = false;
+  showDistance: boolean = false;
   availableItems: Array<Balance> = [];
 
   constructor() { }
