@@ -39,6 +39,6 @@
   <div class="form-group">
     <button class="btn btn-outline-secondary" (click)="clearFilter()">Clear</button>
     <button class="btn btn-outline-primary" (click)="filterByCondition()" *ngIf="filterByLocation">Filter</button>
-    <button class="btn btn-outline-primary" (click)="searchNearestLocation()" *ngIf="!filterByLocation" [disabled]="!selectedProduct || !givenZipCode">Search</button>
+    <button class="btn btn-outline-primary" (click)="searchNearestLocation()" *ngIf="!filterByLocation" [disabled]="!selectedProduct  || selectedProduct === '0' || !givenZipCode">Search</button>
   </div>
 </div>
