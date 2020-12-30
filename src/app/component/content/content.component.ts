@@ -14,19 +14,21 @@ export class ContentComponent implements OnInit {
   constructor(private availabilityService: AvailabilityService, private balanceService: BalanceService) { }
 
   ngOnInit() {
-    this.balanceService.getAllAvailableItems(0, 0, 0);
+    this.balanceService.getAllAvailableItems(0, false, true);
   }
 
   reorder(condition) {
-    this.ascending = !this.ascending;
-    
-    if (condition === 'product') {
-      this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a.product.productName < b.product.productName ? -1 : 1) : (b.product.productName < a.product.productName ? -1 : 1));
-    } else if (condition === 'location') {
-      this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a['location']['zipCode'] < b['location']['zipCode'] ? -1 : 1) : (b['location']['zipCode'] < a['location']['zipCode'] ? -1 : 1));
+    if (condition === 'distance') {
+      this.availabilityService.availableItems.sort((a, b) => this.ascending ? (Number(a.distance) < Number(b.distance) ? -1 : 1) : (Number(b.distance) < Number(a.distance) ? -1 : 1))
     } else {
-      this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a.distance < b.distance ? -1 : 1) : (b.distance < a.distance ? -1 : 1))
+      // amount
     }
+    this.ascending = !this.ascending;
+  }
+
+  changePage(pageNum: number) {
+    this.availabilityService.currentPage = pageNum;
+    this.balanceService.changePage(pageNum - 1);
   }
 
 }

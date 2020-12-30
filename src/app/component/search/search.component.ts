@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Department } from 'src/app/model/department';
 import { Product } from 'src/app/model/product';
-import { AvailabilityService } from 'src/app/service/availability-service/availability.service';
 import { BalanceService } from 'src/app/service/balance-service/balance.service';
 import { DepartmentService } from 'src/app/service/department-service/department.service';
 import { LocationService } from 'src/app/service/location-service/location.service';
@@ -19,9 +18,6 @@ export class SearchComponent implements OnInit {
   allProducts: Array<Product> = [];
   filterProducts: Array<Product> = [];
 
-  selectedLocation: number = 0;
-  selectedDepartment: number = 0;
-  selectedProduct: number = 0;
   givenZipCode: string = '';
   givenRadius: number = 10;
 
@@ -29,7 +25,7 @@ export class SearchComponent implements OnInit {
   validZipCode: boolean = true;
   validRadius: boolean = true;
 
-  constructor(private deptService: DepartmentService, private productService: ProductService, private locationService: LocationService, private balanceService: BalanceService, private availabilityService: AvailabilityService) { }
+  constructor(private deptService: DepartmentService, private productService: ProductService, private locationService: LocationService, private balanceService: BalanceService) { }
 
   ngOnInit() {
     this.deptService.getAllDepartments().then(
@@ -58,22 +54,22 @@ export class SearchComponent implements OnInit {
   }
 
   changeDept() {
-    this.selectedProduct = 0;
-    if (this.selectedDepartment == 0) {
+    this.balanceService.selectedProduct = 0;
+    if (this.balanceService.selectedDepartment == 0) {
       this.filterProducts = this.allProducts;
     } else {
-      this.filterProducts = this.allProducts.filter(prod => prod.dept.id == this.selectedDepartment);
+      this.filterProducts = this.allProducts.filter(prod => prod.dept.id == this.balanceService.selectedDepartment);
     }
   }
 
   filterByCondition() {
-    this.balanceService.getAllAvailableItems(this.selectedDepartment, this.selectedProduct, this.selectedLocation);
+    this.balanceService.getAllAvailableItems(0, false, true);
   }
 
   clearFilter() {
-    this.selectedDepartment = 0;
-    this.selectedProduct = 0;
-    this.selectedLocation = 0;
+    this.balanceService.selectedDepartment = 0;
+    this.balanceService.selectedProduct = 0;
+    this.balanceService.selectedLocation = 0;
     this.filterProducts = this.allProducts;
     this.givenZipCode = '';
     this.givenRadius = 10;
@@ -92,7 +88,7 @@ export class SearchComponent implements OnInit {
     this.validRadius = this.givenRadius >= 0 && this.givenRadius <= 18.6;
     this.validZipCode = /^\d{5}$/.test(this.givenZipCode);
     if (this.validZipCode && this.validZipCode) {
-      this.balanceService.getAvailableItemsByZipCode(this.selectedProduct, this.givenZipCode, this.givenRadius);
+      this.balanceService.getAvailableItemsByZipCode(this.givenZipCode, this.givenRadius);
     }
   }
 

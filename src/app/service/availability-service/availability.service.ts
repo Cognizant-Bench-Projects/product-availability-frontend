@@ -9,6 +9,9 @@ export class AvailabilityService {
   loading: boolean = false;
   showDistance: boolean = false;
   availableItems: Array<Balance> = [];
+  numberOfItem: number = 0;
+  totalPage: number = 1;
+  currentPage: number = 1;
 
   constructor() { }
 }
