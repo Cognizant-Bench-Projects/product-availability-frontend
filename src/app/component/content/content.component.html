@@ -9,7 +9,7 @@
         <tr>
           <th scope="col">Department</th>
           <th scope="col">Product</th>
-          <th scope="col" class="hovered">Amount &#8597;</th>
+          <th scope="col" class="hovered" (click)="reorder('amount')">Amount &#8597;</th>
           <th scope="col">Location</th>
           <th scope="col">Zip Code</th>
           <th scope="col" class="hovered" (click)="reorder('distance')" *ngIf="availabilityService.showDistance">Distance &#8597;</th>
@@ -28,17 +28,48 @@
     </table>
   </div>
   <br>
-  <div id="pageSelector" class="text text-center">
-    <button class="btn btn-outline-info" [disabled]="availabilityService.currentPage===1" (click)="changePage(availabilityService.currentPage-1)">&#8249;</button>
-    <button [ngClass]="availabilityService.currentPage===1?'btn btn-info':'btn btn-outline-info'" [disabled]="availabilityService.currentPage===1" (click)="changePage(1)">1</button>
-    <button class="btn btn-outline-white btn-sm" disabled *ngIf="availabilityService.currentPage-2>1">&#8230;</button>
-    <button class="btn btn-outline-info" *ngIf="availabilityService.currentPage===availabilityService.totalPage && availabilityService.totalPage>4" (click)="changePage(availabilityService.currentPage-2)">{{availabilityService.currentPage-2}}</button>
-    <button class="btn btn-outline-info" *ngIf="availabilityService.currentPage>2" (click)="changePage(availabilityService.currentPage-1)">{{availabilityService.currentPage-1}}</button>
-    <button class="btn btn-info" *ngIf="availabilityService.currentPage!==1 && availabilityService.currentPage!==availabilityService.totalPage" disabled>{{availabilityService.currentPage}}</button>
-    <button class="btn btn-outline-info" *ngIf="availabilityService.totalPage-1>availabilityService.currentPage" (click)="changePage(availabilityService.currentPage+1)">{{availabilityService.currentPage+1}}</button>
-    <button class="btn btn-outline-info" *ngIf="availabilityService.currentPage===1 && availabilityService.totalPage>4" (click)="changePage(availabilityService.currentPage+2)">{{availabilityService.currentPage+2}}</button>
-    <button class="btn btn-outline-white btn-sm" disabled *ngIf="availabilityService.totalPage-availabilityService.currentPage>2">&#8230;</button>
-    <button *ngIf="availabilityService.totalPage>1" [ngClass]="availabilityService.currentPage===availabilityService.totalPage?'btn btn-info':'btn btn-outline-info'" [disabled]="availabilityService.currentPage===availabilityService.totalPage" (click)="changePage(availabilityService.totalPage)">{{availabilityService.totalPage}}</button>
-    <button class="btn btn-outline-info" [disabled]="availabilityService.currentPage>=availabilityService.totalPage" (click)="changePage(availabilityService.currentPage+1)">&#8250;</button>
+  <div id="pageSelector" class="text-center">
+    <button class="btn btn-outline-info" [disabled]="availabilityService.currentPage===1" 
+            (click)="changePage(availabilityService.currentPage-1)">&#8249;
+    </button>
+    <button [ngClass]="availabilityService.currentPage===1?'btn btn-info':'btn btn-outline-info'" 
+            [disabled]="availabilityService.currentPage===1" (click)="changePage(1)">1
+    </button>
+    <button class="btn btn-outline-white btn-sm" disabled 
+            *ngIf="availabilityService.currentPage-2>1">&#8230;
+    </button>
+    <button class="btn btn-outline-info" 
+            *ngIf="availabilityService.currentPage===availabilityService.totalPage && availabilityService.totalPage>4" 
+            (click)="changePage(availabilityService.currentPage-2)">{{availabilityService.currentPage-2}}
+    </button>
+    <button class="btn btn-outline-info" *ngIf="availabilityService.currentPage>2" 
+            (click)="changePage(availabilityService.currentPage-1)">{{availabilityService.currentPage-1}}
+    </button>
+    <button class="btn btn-info" disabled 
+            *ngIf="availabilityService.currentPage!==1 && availabilityService.currentPage!==availabilityService.totalPage">
+            {{availabilityService.currentPage}}
+    </button>
+    <button class="btn btn-outline-info" (click)="changePage(availabilityService.currentPage+1)" 
+            *ngIf="availabilityService.totalPage-1>availabilityService.currentPage">{{availabilityService.currentPage+1}}
+    </button>
+    <button class="btn btn-outline-info" (click)="changePage(availabilityService.currentPage+2)" 
+            *ngIf="availabilityService.currentPage===1 && availabilityService.totalPage>4">{{availabilityService.currentPage+2}}
+    </button>
+    <button class="btn btn-outline-white btn-sm" disabled 
+            *ngIf="availabilityService.totalPage-availabilityService.currentPage>2">&#8230;
+    </button>
+    <button *ngIf="availabilityService.totalPage>1" 
+            [ngClass]="availabilityService.currentPage===availabilityService.totalPage?'btn btn-info':'btn btn-outline-info'" 
+            [disabled]="availabilityService.currentPage===availabilityService.totalPage" 
+            (click)="changePage(availabilityService.totalPage)">{{availabilityService.totalPage}}
+    </button>
+    <button class="btn btn-outline-info" 
+            [disabled]="availabilityService.currentPage>=availabilityService.totalPage" 
+            (click)="changePage(availabilityService.currentPage+1)">&#8250;
+    </button>
+    <button id="goto-page-btn" class="btn btn-sm btn-outline-secondary" 
+            (click)="changePage(inputPageNum)" [disabled]="!inputPageNum || 1>inputPageNum || inputPageNum%1!==0">Go To
+    </button>
+    <input type="number" min="1" required [(ngModel)]="inputPageNum"><span id="page" style="color: gray;">Page</span>
   </div>
 </div>

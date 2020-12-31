@@ -24,3 +24,23 @@ button {
 #content-table {
   min-height: 60vh;
 }
+
+input {
+  max-width: 60px;
+  border: none;
+  border-bottom: 1px solid gray;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input:focus {
+  outline-width: 0;
+}
+
+#goto-page-btn {
+  margin: 0 3px 0 100px;
+}

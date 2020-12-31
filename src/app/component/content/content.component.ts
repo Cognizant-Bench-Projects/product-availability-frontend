@@ -10,25 +10,32 @@ import { BalanceService } from 'src/app/service/balance-service/balance.service'
 export class ContentComponent implements OnInit {
 
   ascending: boolean = true;
+  inputPageNum: number;
 
   constructor(private availabilityService: AvailabilityService, private balanceService: BalanceService) { }
 
   ngOnInit() {
-    this.balanceService.getAllAvailableItems(0, false, true);
+    this.balanceService.getAllAvailableItems(0, false, true, 'id', true);
   }
 
   reorder(condition) {
+    this.ascending = !this.ascending;
     if (condition === 'distance') {
       this.availabilityService.availableItems.sort((a, b) => this.ascending ? (Number(a.distance) < Number(b.distance) ? -1 : 1) : (Number(b.distance) < Number(a.distance) ? -1 : 1))
-    } else {
-      // amount
+    } else if (condition === 'amount') {
+      if (this.availabilityService.showDistance) {
+        this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a.amount < b.amount ? -1 : 1) : (b.amount < a.amount ? -1 : 1));
+      } else {
+        this.availabilityService.sortBy = condition;
+        this.balanceService.getAllAvailableItems(0, false, false, condition, this.ascending);
+      }
     }
-    this.ascending = !this.ascending;
   }
 
   changePage(pageNum: number) {
+    if (pageNum > this.availabilityService.totalPage) pageNum = this.availabilityService.totalPage;
     this.availabilityService.currentPage = pageNum;
-    this.balanceService.changePage(pageNum - 1);
+    this.balanceService.changePage(pageNum - 1, this.availabilityService.sortBy, this.ascending);
   }
 
 }

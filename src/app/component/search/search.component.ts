@@ -63,7 +63,7 @@ export class SearchComponent implements OnInit {
   }
 
   filterByCondition() {
-    this.balanceService.getAllAvailableItems(0, false, true);
+    this.balanceService.getAllAvailableItems(0, false, true, 'id', true);
   }
 
   clearFilter() {

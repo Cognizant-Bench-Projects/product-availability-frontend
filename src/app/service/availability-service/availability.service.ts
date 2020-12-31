@@ -12,6 +12,7 @@ export class AvailabilityService {
   numberOfItem: number = 0;
   totalPage: number = 1;
   currentPage: number = 1;
+  sortBy: string = 'id';
 
   constructor() { }
 }

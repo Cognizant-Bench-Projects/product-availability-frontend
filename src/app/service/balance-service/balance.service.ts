@@ -26,14 +26,15 @@ export class BalanceService {
 
   constructor(private http: HttpClient, private availabilityService: AvailabilityService, private geoService: GeoService) { }
 
-  getAllAvailableItems(page: number, searchByZipCode: boolean, refilter: boolean) {
+  getAllAvailableItems(page: number, searchByZipCode: boolean, refilter: boolean, sortBy: string, isAscending: boolean) {
 
     this.availabilityService.loading = true;
 
     if (refilter) {
       this.searchedLocation = this.selectedLocation;
       this.searchedProduct = this.selectedProduct;
-      this.searchedDepartment = this.selectedDepartment
+      this.searchedDepartment = this.selectedDepartment;
+      this.availabilityService.sortBy = 'id';
     }
 
     let httpOption = {
@@ -45,7 +46,7 @@ export class BalanceService {
 
     let searchUrl = searchByZipCode 
               ? `${this.url}?location=0&product=${this.searchedProduct}&department=0&page=${page}`
-              : `${this.url}?location=${this.searchedLocation}&product=${this.searchedProduct}&department=${this.searchedDepartment}&page=${page}`;
+              : `${this.url}?location=${this.searchedLocation}&product=${this.searchedProduct}&department=${this.searchedDepartment}&page=${page}&sortBy=${sortBy}&isAscending=${isAscending}`;
     
     this.http.get<BalanceList>(searchUrl, httpOption).toPromise().then(
       data => {
@@ -80,7 +81,7 @@ export class BalanceService {
       data => {
         if (data.postalCodes) {
           this.zipCodeResult = data.postalCodes;
-          this.getAllAvailableItems(-1, true, true);
+          this.getAllAvailableItems(-1, true, true, 'id', true);
         } else if (data.status.message.startsWith('no postal code')) {
           this.invalidZipCode.emit(); 
         }
@@ -88,8 +89,8 @@ export class BalanceService {
     )
   }
 
-  changePage(pageNum: number) {
-    this.getAllAvailableItems(pageNum, false, false);
+  changePage(pageNum: number, sortBy: string, isAscending: boolean) {
+    this.getAllAvailableItems(pageNum, false, false, sortBy, isAscending);
   }
 
   emitErrorMsg() {
