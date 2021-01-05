@@ -30,9 +30,21 @@
       <small class="errorMsg" *ngIf="!validZipCode">Invalid Zip Code</small>
     </div>
     <div class="form-group">
-      <label for="radius">Radius (Mile):</label>
-      <input type="number" id="radius" class="form-control" placeholder="0" min="0" max="18" [(ngModel)]="givenRadius">
-      <small class="errorMsg" *ngIf="!validRadius">Radius can only between 0 to 18.6 miles</small>
+      <label for="radius">Radius:</label>
+      <div class="row">
+        <div class="col-sm-6">
+          <input type="number" id="radius" class="form-control" 
+                 placeholder="0" min=0 step="0.5" [max]="availabilityService.unit==='Mile' ? 18.6 : 30" 
+                 [(ngModel)]="givenRadius">
+        </div>
+        <div class="col-sm-4">     
+          <select name="unit-selector" class="custom-select" [(ngModel)]="availabilityService.unit">
+            <option value="Mile">Mile</option>
+            <option value="Km">Km</option>
+          </select>
+        </div>
+      </div>
+      <small class="errorMsg" *ngIf="!validRadius">Invalid radius range</small>
     </div>
     <p (click)="toggleSearchMethod()">Filter By Given Location</p>
   </div>

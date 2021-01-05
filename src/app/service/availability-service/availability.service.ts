@@ -13,6 +13,8 @@ export class AvailabilityService {
   totalPage: number = 1;
   currentPage: number = 1;
   sortBy: string = 'id';
+  unit: string = 'Mile';
+  currentUnit: string = 'Mile';
 
   constructor() { }
 }

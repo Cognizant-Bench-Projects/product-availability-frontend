@@ -57,11 +57,14 @@ export class BalanceService {
         } else {
           this.availabilityService.showDistance = true;
           this.availabilityService.availableItems = [];
+          this.availabilityService.currentUnit = this.availabilityService.unit;
 
           this.zipCodeResult.forEach(geoDetail => {
             data.balances.forEach(balance => {
               if (geoDetail.postalCode === balance['location']['zipCode']) {
-                balance.distance = ((Number(geoDetail.distance) * 0.621371).toFixed(2)).toString();
+                this.availabilityService.unit === 'Mile'
+                  ? balance.distance = ((Number(geoDetail.distance) * 0.621371).toFixed(2)).toString()
+                  : balance.distance = (Number(geoDetail.distance).toFixed(2)).toString();
                 this.availabilityService.availableItems.push(balance);
               }
             })

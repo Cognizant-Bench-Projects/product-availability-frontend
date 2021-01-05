@@ -22,7 +22,7 @@
           <td>{{availableItem.amount}}</td>
           <td>{{availableItem.location.locName}}</td>
           <td>{{availableItem.location.zipCode}}</td>
-          <td *ngIf="availabilityService.showDistance">{{availableItem.distance}} Miles</td>
+          <td *ngIf="availabilityService.showDistance">{{availableItem.distance}} {{availabilityService.currentUnit}}</td>
         </tr>
       </tbody>
     </table>
@@ -68,7 +68,8 @@
             (click)="changePage(availabilityService.currentPage+1)">&#8250;
     </button>
     <button id="goto-page-btn" class="btn btn-sm btn-outline-secondary" 
-            (click)="changePage(inputPageNum)" [disabled]="!inputPageNum || 1>inputPageNum || inputPageNum%1!==0">Go To
+            (click)="changePage(inputPageNum)" 
+            [disabled]="2>availabilityService.totalPage || !inputPageNum || 1>inputPageNum || inputPageNum%1!==0">Go To
     </button>
     <input type="number" min="1" required [(ngModel)]="inputPageNum"><span id="page" style="color: gray;">Page</span>
   </div>

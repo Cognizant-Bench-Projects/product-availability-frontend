@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Department } from 'src/app/model/department';
 import { Product } from 'src/app/model/product';
+import { AvailabilityService } from 'src/app/service/availability-service/availability.service';
 import { BalanceService } from 'src/app/service/balance-service/balance.service';
 import { DepartmentService } from 'src/app/service/department-service/department.service';
 import { LocationService } from 'src/app/service/location-service/location.service';
@@ -25,7 +26,7 @@ export class SearchComponent implements OnInit {
   validZipCode: boolean = true;
   validRadius: boolean = true;
 
-  constructor(private deptService: DepartmentService, private productService: ProductService, private locationService: LocationService, private balanceService: BalanceService) { }
+  constructor(private deptService: DepartmentService, private productService: ProductService, private locationService: LocationService, private balanceService: BalanceService, private availabilityService: AvailabilityService) { }
 
   ngOnInit() {
     this.deptService.getAllDepartments().then(
@@ -85,7 +86,7 @@ export class SearchComponent implements OnInit {
 
   searchNearestLocation() {
     this.givenRadius = this.givenRadius || 0;
-    this.validRadius = this.givenRadius >= 0 && this.givenRadius <= 18.6;
+    this.validRadius = this.givenRadius >= 0 && (this.availabilityService.unit === 'Mile' ? this.givenRadius <= 18.6 : this.givenRadius <= 30);
     this.validZipCode = /^\d{5}$/.test(this.givenZipCode);
     if (this.validZipCode && this.validZipCode) {
       this.balanceService.getAvailableItemsByZipCode(this.givenZipCode, this.givenRadius);
