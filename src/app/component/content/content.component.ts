@@ -49,4 +49,11 @@ export class ContentComponent implements OnInit {
     this.balanceService.getAllAvailableItems(0, false, true, 'id', true, true);
   }
 
+  Retry() {
+    if (this.availabilityService.searchMethod) {
+      this.balanceService.getAvailableItemsByZipCode(this.balanceService.searchedZipcode, this.balanceService.searchedRadius);
+    }
+    else this.balanceService.getAllAvailableItems(0, false, false, 'id', true);
+  }
+
 }

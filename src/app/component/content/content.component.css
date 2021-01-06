@@ -11,7 +11,8 @@ thead .hovered:hover {
   cursor: pointer;
 }
 
-.loading-spinner {
+.loading-spinner, .connect-error {
+  max-width: 95%;
   text-align: center;
   margin-top: 10vh;
 }

@@ -1,7 +1,11 @@
 <div class="loading-spinner" *ngIf="availabilityService.loading">
   <app-loading-spinner></app-loading-spinner>
 </div>
-<div *ngIf="!availabilityService.loading">
+<div class="connect-error" *ngIf="availabilityService.connectFailed">
+  <p style="font-size: 5em; font-weight: 300;">Hello</p>
+  <button class="btn btn-outline-secondary" (click)="Retry()" style="font-size: large;">Retry</button>
+</div>
+<div *ngIf="!availabilityService.loading && !availabilityService.connectFailed">
   <div class="row">
     <div class="col-sm-9">
         <span class="search-condition" *ngIf="balanceService.searchedDepartment && !availabilityService.showDistance">

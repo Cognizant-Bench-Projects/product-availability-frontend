@@ -32,7 +32,9 @@ export class BalanceService {
 
   getAllAvailableItems(page: number, searchByZipCode: boolean, refilter: boolean, sortBy: string, isAscending: boolean, removeSingleCondition: boolean = false) {
 
+    this.availabilityService.connectFailed = false;
     this.availabilityService.loading = true;
+    this.availabilityService.searchMethod = searchByZipCode;
 
     if (refilter && !removeSingleCondition) {
       this.searchedLocation = this.selectedLocation;
@@ -82,7 +84,8 @@ export class BalanceService {
         if (page <= 0 || page > this.availabilityService.totalPage) this.availabilityService.currentPage = 1;
         this.availabilityService.loading = false;
     }, error => {
-      console.warn(error);
+      this.availabilityService.loading = false;
+      this.availabilityService.connectFailed = true;
     })
   }
 

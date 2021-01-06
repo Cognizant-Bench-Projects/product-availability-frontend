@@ -15,6 +15,8 @@ export class AvailabilityService {
   sortBy: string = 'id';
   unit: string = 'Mile';
   currentUnit: string = 'Mile';
+  connectFailed: boolean = false;
+  searchMethod: boolean;
 
   constructor() { }
 }
