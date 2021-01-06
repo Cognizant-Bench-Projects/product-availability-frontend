@@ -38,4 +38,15 @@ export class ContentComponent implements OnInit {
     this.balanceService.changePage(pageNum - 1, this.availabilityService.sortBy, this.ascending);
   }
 
+  removeCondition(condition) {
+    if (condition === 'dept') {
+      this.balanceService.searchedDepartment = null;
+    } else if (condition === 'prod') {
+      this.balanceService.searchedProduct = null;
+    } else if (condition === 'loc') {
+      this.balanceService.searchedLocation = null;
+    }
+    this.balanceService.getAllAvailableItems(0, false, true, 'id', true, true);
+  }
+
 }

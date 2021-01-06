@@ -2,7 +2,26 @@
   <app-loading-spinner></app-loading-spinner>
 </div>
 <div *ngIf="!availabilityService.loading">
-  <p>{{availabilityService.numberOfItem}} Record{{availabilityService.availableItems.length > 1 ? "s" : ""}} Found</p>
+  <div class="row">
+    <div class="col-sm-9">
+        <span class="search-condition" *ngIf="balanceService.searchedDepartment && !availabilityService.showDistance">
+          {{balanceService.searchedDepartment.deptName}} <span class="remove-condition" (click)="removeCondition('dept')">&#10007;</span>
+        </span>
+        <span class="search-condition" *ngIf="balanceService.searchedProduct">
+          {{balanceService.searchedProduct.productName}} <span class="remove-condition" *ngIf="!availabilityService.showDistance" (click)="removeCondition('prod')">&#10007;</span>
+        </span>
+        <span class="search-condition" *ngIf="balanceService.searchedLocation && !availabilityService.showDistance">
+          {{balanceService.searchedLocation.locName}} <span class="remove-condition" (click)="removeCondition('loc')">&#10007;</span>
+        </span>
+        <span class="search-condition" *ngIf="availabilityService.showDistance">
+          Zip Code: {{balanceService.searchedZipcode}}
+        </span>
+        <span class="search-condition" *ngIf="availabilityService.showDistance">
+          {{balanceService.searchedRadius}} {{availabilityService.currentUnit}}
+        </span>
+    </div>
+    <p class="col-sm-3">{{availabilityService.numberOfItem}} Record{{availabilityService.availableItems.length > 1 ? "s" : ""}} Found</p>
+  </div>
   <div id="content-table">
     <table class="table">
       <thead class="thead-dark">

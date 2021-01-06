@@ -1,8 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { Balance } from 'src/app/model/balance';
 import { BalanceList } from 'src/app/model/balanceList';
+import { Department } from 'src/app/model/department';
 import { GeoInfo } from 'src/app/model/geoInfo';
+import { Location } from 'src/app/model/location';
+import { Product } from 'src/app/model/product';
 import { environment } from '../../../environments/environment';
 import { AvailabilityService } from '../availability-service/availability.service';
 import { GeoService } from '../geo_api/geo.service';
@@ -12,13 +14,15 @@ import { GeoService } from '../geo_api/geo.service';
 })
 export class BalanceService {
 
-  selectedLocation: number = 0;
-  selectedDepartment: number = 0;
-  selectedProduct: number = 0;
+  selectedLocation: Location = null;
+  selectedDepartment: Department = null;
+  selectedProduct: Product = null;
 
-  searchedLocation: number = 0;
-  searchedDepartment: number = 0;
-  searchedProduct: number = 0;
+  searchedLocation: Location = null;
+  searchedDepartment: Department = null;
+  searchedProduct: Product = null;
+  searchedZipcode: string = '';
+  searchedRadius: number = 0;
 
   @Output() invalidZipCode: EventEmitter<any> = new EventEmitter<any>();
   url: string = `${environment.balanceUri}available-items`;
@@ -26,11 +30,11 @@ export class BalanceService {
 
   constructor(private http: HttpClient, private availabilityService: AvailabilityService, private geoService: GeoService) { }
 
-  getAllAvailableItems(page: number, searchByZipCode: boolean, refilter: boolean, sortBy: string, isAscending: boolean) {
+  getAllAvailableItems(page: number, searchByZipCode: boolean, refilter: boolean, sortBy: string, isAscending: boolean, removeSingleCondition: boolean = false) {
 
     this.availabilityService.loading = true;
 
-    if (refilter) {
+    if (refilter && !removeSingleCondition) {
       this.searchedLocation = this.selectedLocation;
       this.searchedProduct = this.selectedProduct;
       this.searchedDepartment = this.selectedDepartment;
@@ -44,9 +48,12 @@ export class BalanceService {
       })
     };
 
+    let locId = this.searchedLocation ? this.searchedLocation.id : 0;
+    let deptId = this.searchedDepartment ? this.searchedDepartment.id : 0;
+    let prodId = this.searchedProduct ? this.searchedProduct.id : 0;
     let searchUrl = searchByZipCode 
-              ? `${this.url}?location=0&product=${this.searchedProduct}&department=0&page=${page}`
-              : `${this.url}?location=${this.searchedLocation}&product=${this.searchedProduct}&department=${this.searchedDepartment}&page=${page}&sortBy=${sortBy}&isAscending=${isAscending}`;
+              ? `${this.url}?location=0&product=${prodId}&department=0&page=${page}`
+              : `${this.url}?location=${locId}&product=${prodId}&department=${deptId}&page=${page}&sortBy=${sortBy}&isAscending=${isAscending}`;
     
     this.http.get<BalanceList>(searchUrl, httpOption).toPromise().then(
       data => {
@@ -84,6 +91,8 @@ export class BalanceService {
       data => {
         if (data.postalCodes) {
           this.zipCodeResult = data.postalCodes;
+          this.searchedZipcode = zipCode;
+          this.searchedRadius = radius;
           this.getAllAvailableItems(-1, true, true, 'id', true);
         } else if (data.status.message.startsWith('no postal code')) {
           this.invalidZipCode.emit(); 

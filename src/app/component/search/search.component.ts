@@ -55,11 +55,11 @@ export class SearchComponent implements OnInit {
   }
 
   changeDept() {
-    this.balanceService.selectedProduct = 0;
-    if (this.balanceService.selectedDepartment == 0) {
+    this.balanceService.selectedProduct = null;
+    if (this.balanceService.selectedDepartment == null) {
       this.filterProducts = this.allProducts;
     } else {
-      this.filterProducts = this.allProducts.filter(prod => prod.dept.id == this.balanceService.selectedDepartment);
+      this.filterProducts = this.allProducts.filter(prod => prod.dept.id == this.balanceService.selectedDepartment.id);
     }
   }
 
@@ -68,9 +68,9 @@ export class SearchComponent implements OnInit {
   }
 
   clearFilter() {
-    this.balanceService.selectedDepartment = 0;
-    this.balanceService.selectedProduct = 0;
-    this.balanceService.selectedLocation = 0;
+    this.balanceService.selectedDepartment = null;
+    this.balanceService.selectedProduct = null;
+    this.balanceService.selectedLocation = null;
     this.filterProducts = this.allProducts;
     this.givenZipCode = '';
     this.givenRadius = 10;
