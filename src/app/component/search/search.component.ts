@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Department } from 'src/app/model/department';
 import { Product } from 'src/app/model/product';
+import { Location } from 'src/app/model/location';
 import { AvailabilityService } from 'src/app/service/availability-service/availability.service';
 import { BalanceService } from 'src/app/service/balance-service/balance.service';
 import { DepartmentService } from 'src/app/service/department-service/department.service';
@@ -19,10 +20,16 @@ export class SearchComponent implements OnInit {
   allProducts: Array<Product> = [];
   filterProducts: Array<Product> = [];
 
+  inputLocation: string = '';
+  inputDept: string = '';
+  inputProduct: string = '';
   givenZipCode: string = '';
   givenRadius: number = 10;
 
   filterByLocation: boolean = true;
+  validLocation: boolean = true;
+  validDept: boolean = true;
+  validProduct: boolean = true;
   validZipCode: boolean = true;
   validRadius: boolean = true;
 
@@ -64,22 +71,30 @@ export class SearchComponent implements OnInit {
   }
 
   filterByCondition() {
-    this.balanceService.getAllAvailableItems(0, false, true, 'id', true);
+    if (this.checkForInput()) {
+      this.balanceService.getAllAvailableItems(0, false, true, 'id', true);
+    }
   }
 
   clearFilter() {
-    this.balanceService.selectedDepartment = null;
-    this.balanceService.selectedProduct = null;
-    this.balanceService.selectedLocation = null;
     this.filterProducts = this.allProducts;
+    this.inputLocation = '';
+    this.inputDept = '';
+    this.inputProduct = '';
     this.givenZipCode = '';
     this.givenRadius = 10;
+    this.validDept = true;
+    this.validLocation = true;
+    this.validProduct = true;
     this.validZipCode = true;
     this.validRadius = true;
   }
 
   toggleSearchMethod() {
     this.filterByLocation = !this.filterByLocation;
+    this.validDept = true;
+    this.validLocation = true;
+    this.validProduct = true;
     this.validZipCode = true;
     this.validRadius = true;
   }
@@ -93,4 +108,18 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  checkForInput() {
+    this.validDept = true;
+    this.validLocation = true;
+    this.validProduct = true;
+    if (this.inputLocation) {
+      let loc = this.allLocations.find(loc => loc.locName === this.inputLocation);
+      if (!loc) {
+        this.validLocation = false;
+        return false;
+      } else this.balanceService.selectedLocation = loc;
+    } else this.balanceService.selectedLocation = null;
+
+    return true;
+  }
 }

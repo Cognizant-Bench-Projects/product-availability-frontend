@@ -15,14 +15,19 @@
       <option *ngFor="let prod of filterProducts" [ngValue]="prod">{{prod.productName}}</option>
     </select>
   </div>
-  <div class="form-group"  *ngIf="filterByLocation">
-    <label for="loc-option">Location:</label>
-    <select id="loc-option" class="form-control" [(ngModel)]="balanceService.selectedLocation">
+  <div class="form-group" *ngIf="filterByLocation">
+    <label for="loc-option" class="form-label">Location:</label>
+    <input class="form-control" list="locationList" [(ngModel)]="inputLocation">
+    <!-- <select id="loc-option" class="form-control" [(ngModel)]="balanceService.selectedLocation">
       <option selected value=""></option>
       <option *ngFor="let loc of allLocations" [ngValue]="loc">{{loc.locName}}</option>
-    </select>
-    <p (click)="toggleSearchMethod()">Find Nearest Location</p>
+    </select> -->
+    <datalist id="locationList">
+      <option *ngFor="let loc of allLocations" [ngValue]="loc">{{loc.locName}}</option>
+    </datalist>
+    <small class="errorMsg" *ngIf="!validLocation">Location Not Available</small>
   </div>
+  <p *ngIf="filterByLocation" (click)="toggleSearchMethod()">Find Nearest Location</p>
   <div class="form-group"  *ngIf="!filterByLocation">
     <div class="form-group">
       <label for="zipCode">Zip Code: <span>*</span></label>
