@@ -134,7 +134,6 @@ export class SearchComponent implements OnInit {
       let loc = this.allLocations.find(loc => loc.locName === this.inputLocation);
       if (!loc) {
         this.validLocation = false;
-        return false;
       } else this.balanceService.selectedLocation = loc;
     } else this.balanceService.selectedLocation = null;
     
@@ -142,7 +141,6 @@ export class SearchComponent implements OnInit {
       let dept = this.allDepartments.find(dept => dept.deptName === this.inputDept);
       if (!dept) {
         this.validDept = false;
-        return false;
       } else this.balanceService.selectedDepartment = dept;
     } else this.balanceService.selectedDepartment = null;
     
@@ -150,11 +148,10 @@ export class SearchComponent implements OnInit {
       let prod = this.filterProducts.find(prod => prod.productName === this.inputProduct);
       if (!prod) {
         this.validProduct = false;
-        return false;
       } else this.balanceService.selectedProduct = prod;
     } else this.balanceService.selectedProduct = null;
 
-    return true;
+    return this.validDept && this.validProduct && this.validLocation;
   }
 
   resetErrorMsg() {

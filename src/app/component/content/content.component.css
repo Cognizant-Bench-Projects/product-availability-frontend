@@ -14,7 +14,7 @@ thead .hovered:hover {
 .loading-spinner, .connect-error {
   max-width: 95%;
   text-align: center;
-  margin-top: 10vh;
+  margin-top: 15vh;
 }
 
 button {

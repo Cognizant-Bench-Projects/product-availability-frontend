@@ -2,8 +2,8 @@
   <app-loading-spinner></app-loading-spinner>
 </div>
 <div class="connect-error" *ngIf="availabilityService.connectFailed">
-  <p style="font-size: 5em; font-weight: 300;">Hello</p>
-  <button class="btn btn-outline-secondary" (click)="Retry()" style="font-size: large;">Retry</button>
+  <p style="font-size: 2em; font-weight: 300;">Failed to connect to server</p>
+  <button class="btn btn-outline-secondary" (click)="Retry()">Retry</button>
 </div>
 <div *ngIf="!availabilityService.loading && !availabilityService.connectFailed">
   <div class="row">
