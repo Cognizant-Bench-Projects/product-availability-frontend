@@ -36,6 +36,11 @@ export class SearchComponent implements OnInit {
   constructor(private deptService: DepartmentService, private productService: ProductService, private locationService: LocationService, private balanceService: BalanceService, private availabilityService: AvailabilityService) { }
 
   ngOnInit() {
+    this.fetchAllData();
+    this.balanceService.emitErrorMsg().subscribe(() => this.validZipCode = false);
+  }
+
+  fetchAllData() {
     this.deptService.getAllDepartments().then(
       data => {
         this.allDepartments = data;
@@ -57,11 +62,11 @@ export class SearchComponent implements OnInit {
     }, error => {
       console.error(error);
     });
-
-    this.balanceService.emitErrorMsg().subscribe(() => this.validZipCode = false);
   }
 
   changeDept() {
+    this.validDept = true;
+    this.validProduct = true;
     if (this.inputDept === '') {
       this.filterProducts = this.allProducts;
     } else {
@@ -72,6 +77,7 @@ export class SearchComponent implements OnInit {
   }
 
   filterByCondition() {
+    this.resetErrorMsg();
     if (this.checkForInput()) {
       this.balanceService.getAllAvailableItems(0, false, true, 'id', true);
     }
@@ -93,17 +99,16 @@ export class SearchComponent implements OnInit {
   }
 
   searchNearestLocation() {
+    this.resetErrorMsg();
     this.givenRadius = this.givenRadius || 0;
     this.validRadius = this.givenRadius >= 0 && (this.availabilityService.unit === 'Mile' ? this.givenRadius <= 18.6 : this.givenRadius <= 30);
     this.validZipCode = /^\d{5}$/.test(this.givenZipCode);
-    if (this.validZipCode && this.validZipCode) {
+    if (this.checkForInput() && this.validRadius && this.validZipCode) {
       this.balanceService.getAvailableItemsByZipCode(this.givenZipCode, this.givenRadius);
     }
   }
 
   checkForInput() {
-    this.resetErrorMsg();
-
     if (this.inputLocation) {
       let loc = this.allLocations.find(loc => loc.locName === this.inputLocation);
       if (!loc) {
