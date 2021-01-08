@@ -15,7 +15,7 @@ export class ContentComponent implements OnInit {
   constructor(private availabilityService: AvailabilityService, private balanceService: BalanceService) { }
 
   ngOnInit() {
-    this.balanceService.getAllAvailableItems(0, false, true, 'id', true);
+    this.balanceService.getAllAvailableItems(0, false, 'id', true);
   }
 
   reorder(condition) {
@@ -27,7 +27,7 @@ export class ContentComponent implements OnInit {
         this.availabilityService.availableItems.sort((a, b) => this.ascending ? (a.amount < b.amount ? -1 : 1) : (b.amount < a.amount ? -1 : 1));
       } else {
         this.availabilityService.sortBy = condition;
-        this.balanceService.getAllAvailableItems(0, false, false, condition, this.ascending);
+        this.balanceService.getAllAvailableItems(0, false, condition, this.ascending);
       }
     }
   }
@@ -40,20 +40,20 @@ export class ContentComponent implements OnInit {
 
   removeCondition(condition) {
     if (condition === 'dept') {
-      this.balanceService.searchedDepartment = null;
+      this.balanceService.selectedDepartment = null;
     } else if (condition === 'prod') {
-      this.balanceService.searchedProduct = null;
+      this.balanceService.selectedProduct = null;
     } else if (condition === 'loc') {
-      this.balanceService.searchedLocation = null;
+      this.balanceService.selectedLocation = null;
     }
-    this.balanceService.getAllAvailableItems(0, false, true, 'id', true, true);
+    this.balanceService.getAllAvailableItems(0, false, 'id', true);
   }
 
   Retry() {
     if (this.availabilityService.searchMethod) {
       this.balanceService.getAvailableItemsByZipCode(this.balanceService.searchedZipcode, this.balanceService.searchedRadius);
     }
-    else this.balanceService.getAllAvailableItems(0, false, false, 'id', true);
+    else this.balanceService.getAllAvailableItems(0, false, 'id', true);
   }
 
 }

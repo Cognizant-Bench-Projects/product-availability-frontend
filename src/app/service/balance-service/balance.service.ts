@@ -17,10 +17,6 @@ export class BalanceService {
   selectedLocation: Location = null;
   selectedDepartment: Department = null;
   selectedProduct: Product = null;
-
-  searchedLocation: Location = null;
-  searchedDepartment: Department = null;
-  searchedProduct: Product = null;
   searchedZipcode: string = '';
   searchedRadius: number = 0;
 
@@ -30,18 +26,11 @@ export class BalanceService {
 
   constructor(private http: HttpClient, private availabilityService: AvailabilityService, private geoService: GeoService) { }
 
-  getAllAvailableItems(page: number, searchByZipCode: boolean, refilter: boolean, sortBy: string, isAscending: boolean, removeSingleCondition: boolean = false) {
+  getAllAvailableItems(page: number, searchByZipCode: boolean, sortBy: string, isAscending: boolean) {
 
     this.availabilityService.connectFailed = false;
     this.availabilityService.loading = true;
     this.availabilityService.searchMethod = searchByZipCode;
-
-    if (refilter && !removeSingleCondition) {
-      this.searchedLocation = this.selectedLocation;
-      this.searchedProduct = this.selectedProduct;
-      this.searchedDepartment = this.selectedDepartment;
-      this.availabilityService.sortBy = 'id';
-    }
 
     let httpOption = {
       headers: new HttpHeaders({
@@ -50,9 +39,9 @@ export class BalanceService {
       })
     };
 
-    let locId = this.searchedLocation ? this.searchedLocation.id : 0;
-    let deptId = this.searchedDepartment ? this.searchedDepartment.id : 0;
-    let prodId = this.searchedProduct ? this.searchedProduct.id : 0;
+    let locId = this.selectedLocation ? this.selectedLocation.id : 0;
+    let deptId = this.selectedDepartment ? this.selectedDepartment.id : 0;
+    let prodId = this.selectedProduct ? this.selectedProduct.id : 0;
     let searchUrl = searchByZipCode 
               ? `${this.url}?location=0&product=${prodId}&department=0&page=${page}`
               : `${this.url}?location=${locId}&product=${prodId}&department=${deptId}&page=${page}&sortBy=${sortBy}&isAscending=${isAscending}`;
@@ -96,7 +85,7 @@ export class BalanceService {
           this.zipCodeResult = data.postalCodes;
           this.searchedZipcode = zipCode;
           this.searchedRadius = radius;
-          this.getAllAvailableItems(-1, true, true, 'id', true);
+          this.getAllAvailableItems(-1, true, 'id', true);
         } else if (data.status.message.startsWith('no postal code')) {
           this.invalidZipCode.emit(); 
         }
@@ -105,7 +94,7 @@ export class BalanceService {
   }
 
   changePage(pageNum: number, sortBy: string, isAscending: boolean) {
-    this.getAllAvailableItems(pageNum, false, false, sortBy, isAscending);
+    this.getAllAvailableItems(pageNum, false, sortBy, isAscending);
   }
 
   emitErrorMsg() {

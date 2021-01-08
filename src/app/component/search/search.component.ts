@@ -79,7 +79,7 @@ export class SearchComponent implements OnInit {
   filterByCondition() {
     this.resetErrorMsg();
     if (this.checkForInput()) {
-      this.balanceService.getAllAvailableItems(0, false, true, 'id', true);
+      this.balanceService.getAllAvailableItems(0, false, 'id', true);
     }
   }
 

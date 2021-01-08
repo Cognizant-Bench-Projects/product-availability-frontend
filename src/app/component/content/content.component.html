@@ -8,14 +8,14 @@
 <div *ngIf="!availabilityService.loading && !availabilityService.connectFailed">
   <div class="row">
     <div class="col-sm-9">
-        <span class="search-condition" *ngIf="balanceService.searchedDepartment && !availabilityService.showDistance">
-          {{balanceService.searchedDepartment.deptName}} <span class="remove-condition" (click)="removeCondition('dept')">&#10007;</span>
+        <span class="search-condition" *ngIf="balanceService.selectedDepartment && !availabilityService.showDistance">
+          {{balanceService.selectedDepartment.deptName}} <span class="remove-condition" (click)="removeCondition('dept')">&#10007;</span>
         </span>
-        <span class="search-condition" *ngIf="balanceService.searchedProduct">
-          {{balanceService.searchedProduct.productName}} <span class="remove-condition" *ngIf="!availabilityService.showDistance" (click)="removeCondition('prod')">&#10007;</span>
+        <span class="search-condition" *ngIf="balanceService.selectedProduct">
+          {{balanceService.selectedProduct.productName}} <span class="remove-condition" *ngIf="!availabilityService.showDistance" (click)="removeCondition('prod')">&#10007;</span>
         </span>
-        <span class="search-condition" *ngIf="balanceService.searchedLocation && !availabilityService.showDistance">
-          {{balanceService.searchedLocation.locName}} <span class="remove-condition" (click)="removeCondition('loc')">&#10007;</span>
+        <span class="search-condition" *ngIf="balanceService.selectedLocation && !availabilityService.showDistance">
+          {{balanceService.selectedLocation.locName}} <span class="remove-condition" (click)="removeCondition('loc')">&#10007;</span>
         </span>
         <span class="search-condition" *ngIf="availabilityService.showDistance">
           Zip Code: {{balanceService.searchedZipcode}}
