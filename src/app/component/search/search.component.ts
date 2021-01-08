@@ -40,7 +40,7 @@ export class SearchComponent implements OnInit {
       data => {
         this.allDepartments = data;
     }, error => {
-      console.warn(error);
+      console.error(error);
     });
 
     this.productService.getAllProducts().then(
@@ -48,26 +48,27 @@ export class SearchComponent implements OnInit {
         this.allProducts = data;
         this.filterProducts = data;
     }, error => {
-      console.warn(error);
+      console.error(error);
     });
 
     this.locationService.getAllLocations().then(
       data => {
         this.allLocations = data;
     }, error => {
-      console.warn(error);
+      console.error(error);
     });
 
     this.balanceService.emitErrorMsg().subscribe(() => this.validZipCode = false);
   }
 
   changeDept() {
-    this.balanceService.selectedProduct = null;
-    if (this.balanceService.selectedDepartment == null) {
+    if (this.inputDept === '') {
       this.filterProducts = this.allProducts;
     } else {
-      this.filterProducts = this.allProducts.filter(prod => prod.dept.id == this.balanceService.selectedDepartment.id);
+      let dept = this.allDepartments.find(dept => dept.deptName === this.inputDept);
+      this.filterProducts = !!dept ? this.allProducts.filter(prod => prod.dept.id === dept.id) : [];
     }
+    if (!this.filterProducts.find(prod => prod.productName === this.inputProduct)) this.inputProduct = '';
   }
 
   filterByCondition() {
@@ -83,20 +84,12 @@ export class SearchComponent implements OnInit {
     this.inputProduct = '';
     this.givenZipCode = '';
     this.givenRadius = 10;
-    this.validDept = true;
-    this.validLocation = true;
-    this.validProduct = true;
-    this.validZipCode = true;
-    this.validRadius = true;
+    this.resetErrorMsg();
   }
 
   toggleSearchMethod() {
     this.filterByLocation = !this.filterByLocation;
-    this.validDept = true;
-    this.validLocation = true;
-    this.validProduct = true;
-    this.validZipCode = true;
-    this.validRadius = true;
+    this.resetErrorMsg();
   }
 
   searchNearestLocation() {
@@ -109,9 +102,8 @@ export class SearchComponent implements OnInit {
   }
 
   checkForInput() {
-    this.validDept = true;
-    this.validLocation = true;
-    this.validProduct = true;
+    this.resetErrorMsg();
+
     if (this.inputLocation) {
       let loc = this.allLocations.find(loc => loc.locName === this.inputLocation);
       if (!loc) {
@@ -119,7 +111,31 @@ export class SearchComponent implements OnInit {
         return false;
       } else this.balanceService.selectedLocation = loc;
     } else this.balanceService.selectedLocation = null;
+    
+    if (this.inputDept) {
+      let dept = this.allDepartments.find(dept => dept.deptName === this.inputDept);
+      if (!dept) {
+        this.validDept = false;
+        return false;
+      } else this.balanceService.selectedDepartment = dept;
+    } else this.balanceService.selectedDepartment = null;
+    
+    if (this.inputProduct) {
+      let prod = this.filterProducts.find(prod => prod.productName === this.inputProduct);
+      if (!prod) {
+        this.validProduct = false;
+        return false;
+      } else this.balanceService.selectedProduct = prod;
+    } else this.balanceService.selectedProduct = null;
 
     return true;
+  }
+
+  resetErrorMsg() {
+    this.validDept = true;
+    this.validLocation = true;
+    this.validProduct = true;
+    this.validZipCode = true;
+    this.validRadius = true;
   }
 }

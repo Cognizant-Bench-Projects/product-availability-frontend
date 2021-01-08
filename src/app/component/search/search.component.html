@@ -2,26 +2,24 @@
   <h3>{{filterByLocation ? "Filter" : 'Search'}} By</h3>
   <br>
   <div class="form-group">
-    <label for="dept-option">Department:</label>
-    <select id="dept-option" class="form-control" [(ngModel)]="balanceService.selectedDepartment" (change)="changeDept()">
-      <option selected value=""></option>
+    <label for="dept-option" class="form-label">Department:</label>
+    <input class="form-control" list="deptList" [(ngModel)]="inputDept" (ngModelChange)="changeDept()">
+    <datalist id="deptList">
       <option *ngFor="let dept of allDepartments" [ngValue]="dept">{{dept.deptName}}</option>
-    </select>
+    </datalist>
+    <small class="errorMsg" *ngIf="!validDept">Department Not Available</small>
   </div>
   <div class="form-group">
-    <label for="prod-option">Product: <span *ngIf="!filterByLocation">*</span></label>
-    <select id="prod-option" class="form-control" [(ngModel)]="balanceService.selectedProduct">
-      <option selected value=""></option>
+    <label for="prod-option" class="form-label">Product: <span *ngIf="!filterByLocation">*</span></label>
+    <input class="form-control" list="productList" [(ngModel)]="inputProduct">
+    <datalist id="productList">
       <option *ngFor="let prod of filterProducts" [ngValue]="prod">{{prod.productName}}</option>
-    </select>
+    </datalist>
+    <small class="errorMsg" *ngIf="!validProduct">Product Not Available</small>
   </div>
   <div class="form-group" *ngIf="filterByLocation">
     <label for="loc-option" class="form-label">Location:</label>
     <input class="form-control" list="locationList" [(ngModel)]="inputLocation">
-    <!-- <select id="loc-option" class="form-control" [(ngModel)]="balanceService.selectedLocation">
-      <option selected value=""></option>
-      <option *ngFor="let loc of allLocations" [ngValue]="loc">{{loc.locName}}</option>
-    </select> -->
     <datalist id="locationList">
       <option *ngFor="let loc of allLocations" [ngValue]="loc">{{loc.locName}}</option>
     </datalist>
