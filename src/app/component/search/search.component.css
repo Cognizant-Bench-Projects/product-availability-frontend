@@ -1,4 +1,4 @@
-.filter-form {
+.filter-form, #title {
   margin: 0 5% 0 8%;
 }
 
@@ -24,4 +24,10 @@ p:hover {
 
 span, .errorMsg {
   color: red;
+}
+
+#reload {
+  color: gray;
+  cursor: pointer;
+  font-size: 1.3em;
 }

@@ -1,6 +1,18 @@
-<div class="filter-form" *ngIf="allLocations.length && allDepartments.length && allProducts.length">
-  <h3>{{filterByLocation ? "Filter" : 'Search'}} By</h3>
-  <br>
+<div id="title">
+  <div class="row">
+    <div class="col-sm-7">
+      <h3>{{filterByLocation ? "Filter" : 'Search'}} By</h3>
+    </div>
+    <div class="col-sm-2">
+      <span id="reload" (click)="reload()"><i [ngClass]="loadingData? 'fa fa-refresh fa-spin' : 'fa fa-refresh'"></i></span>
+    </div>
+  </div>
+</div>
+<br>
+<div class="filter-form" *ngIf="!loadingData && loadingDataFailed">
+  Loading Failed
+</div>
+<div class="filter-form" *ngIf="!loadingData && !this.loadingDataFailed">
   <div class="form-group">
     <label for="dept-option" class="form-label">Department:</label>
     <input class="form-control" list="deptList" [(ngModel)]="inputDept" (ngModelChange)="changeDept()">

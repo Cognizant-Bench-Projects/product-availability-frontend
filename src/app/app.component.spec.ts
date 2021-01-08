@@ -6,6 +6,7 @@ import { SearchComponent } from './component/search/search.component';
 import { FormsModule } from '@angular/forms';
 import { LoadingSpinnerComponent } from './component/loading-spinner/loading-spinner.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -19,7 +20,8 @@ describe('AppComponent', () => {
       ],
       imports: [
         FormsModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        AngularFontAwesomeModule
       ]
     }).compileComponents();
   }));

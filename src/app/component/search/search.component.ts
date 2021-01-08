@@ -26,6 +26,8 @@ export class SearchComponent implements OnInit {
   givenZipCode: string = '';
   givenRadius: number = 10;
 
+  loadingData: boolean = true;
+  loadingDataFailed: boolean = false;
   filterByLocation: boolean = true;
   validLocation: boolean = true;
   validDept: boolean = true;
@@ -41,26 +43,45 @@ export class SearchComponent implements OnInit {
   }
 
   fetchAllData() {
+    this.loadingData = true;
+    this.loadingDataFailed = false;
+    let count = 0;
+
     this.deptService.getAllDepartments().then(
       data => {
         this.allDepartments = data;
+        count++;
+        if (count === 3) {
+          this.loadingData = false;
+        }
     }, error => {
-      console.error(error);
+      this.loadingData = false;
+      this.loadingDataFailed = true;
     });
 
     this.productService.getAllProducts().then(
       data => {
         this.allProducts = data;
         this.filterProducts = data;
+        count++;
+        if (count === 3) {
+          this.loadingData = false;
+        }
     }, error => {
-      console.error(error);
+      this.loadingData = false;
+      this.loadingDataFailed = true;
     });
 
     this.locationService.getAllLocations().then(
       data => {
         this.allLocations = data;
+        count++;
+        if (count === 3) {
+          this.loadingData = false;
+        }
     }, error => {
-      console.error(error);
+      this.loadingData = false;
+      this.loadingDataFailed = true;
     });
   }
 
@@ -142,5 +163,10 @@ export class SearchComponent implements OnInit {
     this.validProduct = true;
     this.validZipCode = true;
     this.validRadius = true;
+  }
+
+  reload() {
+    this.clearFilter();
+    this.fetchAllData();
   }
 }
