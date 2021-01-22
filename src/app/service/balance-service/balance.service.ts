@@ -5,7 +5,7 @@ import { Department } from 'src/app/model/department';
 import { GeoInfo } from 'src/app/model/geoInfo';
 import { Location } from 'src/app/model/location';
 import { Product } from 'src/app/model/product';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 import { AvailabilityService } from '../availability-service/availability.service';
 import { GeoService } from '../geo_api/geo.service';
 
